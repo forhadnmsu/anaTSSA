@@ -7,7 +7,6 @@ N_L_down = 263
 N_R_up = 290 
 N_R_down = 276
 
-# Polarizations and beam with assumed zero error
 P_up = 0.86
 P_down = 0.83
 dilution_factor = 0.18
