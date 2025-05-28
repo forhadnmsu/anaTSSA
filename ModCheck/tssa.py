@@ -79,20 +79,12 @@ effective_factor = polarization * packing_fraction * dilution_factor
 A_N_final = A_fit / effective_factor
 A_N_final_err = A_fit_err / effective_factor
 
-#print(f'TSSA from φ_CS\nA_N_final = {A_N_final:.3f} ± {A_N_final_err:.3f}')
-#plt.plot(x_fit, cos_fit(x_fit, A_fit), 'r-', label=f'Fit: A_meas = {A_fit:.3f} ± {A_fit_err:.3f}')
-#plt.title(f'TSSA from φ_CS\nA_N_final = {A_N_final:.3f} ± {A_N_final_err:.3f}')
-
-
-
 err_up = np.sqrt(N_up)
 err_down = np.sqrt(N_down)
 
-# Plot spin-up and spin-down distributions with Poisson error bars
 plt.errorbar(centers, N_up, yerr=err_up, fmt='o', label='Spin Up', color='blue', capsize=3)
 plt.errorbar(centers, N_down, yerr=err_down, fmt='o', label='Spin Down', color='orange', capsize=3)
 
-# Plot formatting
 plt.xlabel(r'$\phi$ [rad]')
 plt.ylabel('Counts')
 #plt.title(r'Distribution of $\phi_{\mathrm{CS}}$ for Spin Up/Down')

@@ -47,11 +47,9 @@ A_N_down = -A_raw_down * pi_over_2  # Note the minus sign
 A_N_up_err = A_raw_up_err * pi_over_2
 A_N_down_err = A_raw_down_err * pi_over_2
 
-# Average value and propagated uncertainty
 A_N_avg = (A_N_up + A_N_down) / 2
 A_N_avg_err = 0.5 * np.sqrt(A_N_up_err**2 + A_N_down_err**2)
 
-# Print results
 print(f"A_N^up     = {A_N_up:.5f} ± {A_N_up_err:.5f}")
 print(f"A_N^down   = {A_N_down:.5f} ± {A_N_down_err:.5f}")
 print(f"A_N^avg    = {A_N_avg:.5f} ± {A_N_avg_err:.5f}")
