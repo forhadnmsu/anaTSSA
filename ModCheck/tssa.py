@@ -11,7 +11,7 @@ phi_down = []
 muon_mass = 0.1056
 A_injected = 0.1
 
-file_= ROOT.TFile("data_in/phi_angles_with_asym.root");
+file_= ROOT.TFile("phi_angles_with_asym.root");
 tree = file_.Get("phi_tree")
 
 count_up = 0
@@ -60,13 +60,13 @@ x_fit = np.linspace(-np.pi, np.pi, 1000)
 plt.plot(x_fit, cos_fit(x_fit, A_fit), 'r-',
          label=f'Fit: A = {A_fit:.3f} ± {A_fit_err:.3f}, χ²/ndf = {chi2_ndf:.2f}')
 plt.axhline(0, color='gray', linestyle='--')
-plt.xlabel('φ_CS [rad]')
-plt.ylabel('A_N(φ_CS)')
+plt.xlabel('φ[rad]')
+plt.ylabel('A_N(φ)')
 plt.title('TSSA from φ')
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
-plt.savefig("tssa_phi_cs.png", dpi=300)  # Save before showing
+plt.savefig("tssa.png", dpi=300)  # Save before showing
 plt.show()
 
 

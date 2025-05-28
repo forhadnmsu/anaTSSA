@@ -1,11 +1,11 @@
 import numpy as np
 
 # Input counts in different spin setup
-N_L_up = 2604 
-N_L_down = 2331
+N_L_up = 13277 
+N_L_down = 11645
 
-N_R_up = 2384
-N_R_down = 2681
+N_R_up = 11713
+N_R_down = 13365
 
 #P_up = 0.86
 #P_down = 0.83
@@ -33,10 +33,25 @@ def asymmetry_error(NL, NR):
 A_raw_up_err = asymmetry_error(N_L_up, N_R_up) 
 A_raw_down_err = asymmetry_error(N_L_down, N_R_down)
 
-# Propagate through the final expression
 numerator_err = 0.5 * np.sqrt(A_raw_up_err**2 + A_raw_down_err**2)
-A_N_final_err = numerator_err / (factor)
 
 print(f"A_raw_up     = {A_raw_up:.5f} ± {A_raw_up_err:.5f}")
 print(f"A_raw_down   = {A_raw_down:.5f} ± {A_raw_down_err:.5f}")
-print(f"A_N_final    = {A_N_final:.5f} ± {A_N_final_err:.5f}")
+
+# Constant
+pi_over_2 = np.pi / 2
+
+# Calculate A_N^up and A_N^down
+A_N_up = A_raw_up * pi_over_2
+A_N_down = -A_raw_down * pi_over_2  # Note the minus sign
+A_N_up_err = A_raw_up_err * pi_over_2
+A_N_down_err = A_raw_down_err * pi_over_2
+
+# Average value and propagated uncertainty
+A_N_avg = (A_N_up + A_N_down) / 2
+A_N_avg_err = 0.5 * np.sqrt(A_N_up_err**2 + A_N_down_err**2)
+
+# Print results
+print(f"A_N^up     = {A_N_up:.5f} ± {A_N_up_err:.5f}")
+print(f"A_N^down   = {A_N_down:.5f} ± {A_N_down_err:.5f}")
+print(f"A_N^avg    = {A_N_avg:.5f} ± {A_N_avg_err:.5f}")
