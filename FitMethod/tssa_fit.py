@@ -19,10 +19,8 @@ TARGET_COUNTS = {
     "N_R_down":276
 }
 
-
 for key, value in TARGET_COUNTS.items():
     print(f"{key}: {value}")
-
 
 def compute_asymmetry(n_left: float, n_right: float) -> float:
     total = n_left + n_right
@@ -175,6 +173,7 @@ def main():
     plt.savefig('AN_distribution_gaussfit_poisson.png', dpi=300)
     plt.show()
 
+    '''
     # Plot fit error distribution
     counts_err, bin_edges_err = np.histogram(valid_a_n_errors, bins=20, density=False)
     bin_centers_err = (bin_edges_err[:-1] + bin_edges_err[1:]) / 2
@@ -196,6 +195,7 @@ def main():
     plt.savefig('A_fit_error_distribution_gaussfit.png', dpi=300)
     plt.show()
 
+    '''
     # Plot chi-square distribution
     plt.figure(figsize=(8, 6))
     plt.hist(chi2_ndf_list, bins=20, color='skyblue', label='Chi2/ndf')
@@ -207,6 +207,23 @@ def main():
     plt.tight_layout()
     plt.savefig('chi2_ndf_distribution.png', dpi=300)
     plt.show()
+
+    # Compute corrected A_N with polarization and dilution factors
+    P_UP = 0.86
+    P_DOWN = 0.83
+    DILUTION_FACTOR = 0.18
+    PACKING_FRACTION = 0.60
+
+    P_mean = 0.5 * (P_UP + P_DOWN)
+    factor = DILUTION_FACTOR * PACKING_FRACTION * P_mean
+    print(f"Correction factor: {factor:.5f}")
+
+
+    A_N_final = (mean*2) / (factor*math.pi)
+    A_N_final_err = (std*2) / (factor*math.pi)
+    print(f"A_fit: {mean:.5f}")
+    print(f"A_fit error: {std:.5f}\n")
+    print(f"A_N_final = {A_N_final:.5f} ± {A_N_final_err:.5f}")
 
 if __name__ == "__main__":
     main()
