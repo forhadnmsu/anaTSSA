@@ -13,11 +13,16 @@ from scipy.stats import norm
 #np.random.seed(seed)
 
 TARGET_COUNTS = {
-    "N_L_up": 300,
-    "N_R_up": 290,
-    "N_L_down": 263,
-    "N_R_down": 276
+    "N_L_up":  300,
+    "N_R_up":  290,
+    "N_L_down":263,
+    "N_R_down":276
 }
+
+
+for key, value in TARGET_COUNTS.items():
+    print(f"{key}: {value}")
+
 
 def compute_asymmetry(n_left: float, n_right: float) -> float:
     total = n_left + n_right
@@ -36,8 +41,20 @@ def define_distributions(a_up: float, a_down: float) -> tuple:
     spin_down_right.SetParameter(0, a_down)
     return spin_up_left, spin_down_left, spin_up_right, spin_down_right
 
-def generate_events(distribution: ROOT.TF1, num_events: int) -> list:
-    return [distribution.GetRandom() for _ in range(num_events)]
+
+def generate_events(distribution: ROOT.TF1, num_events: int, nbins: int = 1000) -> list:
+    x_vals = np.linspace(distribution.GetXmin(), distribution.GetXmax(), nbins)
+    y_vals = np.array([distribution.Eval(x) for x in x_vals])
+    y_sum = np.sum(y_vals)
+    probs = y_vals / y_sum
+    # Introduce Poisson fluctuations
+    counts = np.random.poisson(probs * num_events)
+    bin_width = x_vals[1] - x_vals[0]
+    event_list = []
+    for x, count in zip(x_vals, counts):
+        event_list.extend([x + np.random.uniform(-bin_width/2, bin_width/2) for _ in range(count)])
+    return event_list
+
 
 def cos_fit(x: np.ndarray, a: float) -> np.ndarray:
     return a * np.cos(x)
@@ -80,7 +97,7 @@ def main():
         a_n = (hist_up_np - hist_down_np) / (hist_up_np + hist_down_np)
         n_total = hist_up_np + hist_down_np
         a_n_err = np.sqrt((4 * hist_up_np * hist_down_np) / (n_total ** 3))
-        a_n_err = np.where(np.isnan(a_n_err) | (a_n_err == 0), 1e-10, a_n_err)
+        #a_n_err = np.where(np.isnan(a_n_err) | (a_n_err == 0), 1e-10, a_n_err)
 
         # Plot for specific trial
         if trial == PLOT_TRIAL:
